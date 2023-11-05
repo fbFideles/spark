@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  postgres:
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=dev123456
+    build:
+      dockerfile: Dockerfile.postgres
+      context: .
+
+  api:
+    ports:
+      - "8080:8080"
+    build:
+      dockerfile: Dockerfile.api
+      context: .
+    volumes:
+      - "./config.json:/etc/default/config.json"

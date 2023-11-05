@@ -1,0 +1,15 @@
+FROM golang:1.21.0-alpine AS builder
+
+WORKDIR /app/
+
+COPY go.* /app/
+RUN go mod download
+
+COPY . .
+RUN go build -o spark .
+
+FROM scratch AS runner
+COPY --from=builder /app/spark /sbin/spark
+
+EXPOSE 8080
+ENTRYPOINT ["./sbin/spark"]
