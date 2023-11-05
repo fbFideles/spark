@@ -1,21 +1,21 @@
 package pessoas
 
 import (
-	"database/sql"
 	"github.com/google/uuid"
+	"spark/database"
 	domain "spark/domain/pessoas"
 )
 
-func NewRepo(tx *sql.Tx) domain.RepoPessoas {
+func NewRepo(tx database.Transaction) domain.RepoPessoas {
 	return &repository{tx: tx}
 }
 
 type repository struct {
-	tx *sql.Tx
+	tx database.Transaction
 }
 
-// Adicionar define um metodo para adicionar um registro de pessoa
-func (r *repository) Adicionar(req *domain.Pessoa) (id *uuid.UUID, err error) {
+// AdicionarPessoa define um metodo para adicionar um registro de pessoa
+func (r *repository) AdicionarPessoa(req *domain.Pessoa) (id *uuid.UUID, err error) {
 	id = new(uuid.UUID)
 	if err := r.tx.QueryRow(`INSERT INTO public.t_pessoa (apelido, nome) 
 			VALUES ($1, $2) RETURNING "id";`, req.Apelido, req.Nome).Scan(&id); err != nil {

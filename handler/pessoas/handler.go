@@ -33,9 +33,10 @@ func adicionarPessoa(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, err)
 	}
 
-	if err = pessoas.Adicionar(c, &req); err != nil {
+	id, err := pessoas.Adicionar(c, &req)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
 	}
 
-	c.JSON(http.StatusCreated, nil)
+	c.JSON(http.StatusCreated, id)
 }

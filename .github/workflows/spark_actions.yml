@@ -21,5 +21,8 @@ jobs:
       - name: Download application dependencies
         run: go mod download
 
+      - name: Go Unit Testing
+        run: go test -v -gcflags=-l ./...
+
       - name: Building application
         run: go build .
