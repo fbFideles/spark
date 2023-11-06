@@ -11,12 +11,9 @@ services:
       context: .
 
   api:
-    depends_on:
-      - postgres
-    ports:
-      - "8080:8080"
     build:
-      dockerfile: Dockerfile.api
+      dockerfile: Dockerfile.test.api
       context: .
     volumes:
       - "./config.json:/etc/default/config.json"
+

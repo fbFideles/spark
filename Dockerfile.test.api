@@ -1,0 +1,18 @@
+FROM golang:1.21.0-alpine AS builder
+
+WORKDIR /app/
+
+COPY go.* /app/
+RUN go mod download
+
+COPY . .
+WORKDIR /app/test/
+
+ENV DOCKERIZE_VERSION v0.7.0
+
+RUN apk update --no-cache \
+    && apk add --no-cache wget openssl \
+    && wget -O - https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz | tar xzf - -C /usr/local/bin \
+    && apk del wget
+
+CMD ["dockerize", "-wait", "tcp://postgres:5432",  "--", "go", "test", "-v", "./..."]

@@ -22,7 +22,7 @@ jobs:
         run: go mod download
 
       - name: Go Unit Testing
-        run: go test -v -gcflags=-l ./...
+        run: go test -v -gcflags=-l -short ./...
 
       - name: Building application
         run: go build .
